@@ -1,40 +1,49 @@
-# OS-Page-Replacement-and-Scheduling-Algorithms
+# OS Page‑Replacement and Scheduling Algorithms
 
-* Developed a simulation framework that generates synthetic page‑reference streams based on RAM capacity and process count.
-* Evaluated OPT, FIFO, LRU, and MRU page‑replacement algorithms across all feasible page‑sizes, reporting comprehensive hit‑rate comparisons.
-* Employed object‑oriented design to create modular, extensible, and loosely coupled classes, adhering to industry‑level coding standards.
-* Incorporated system‑design patterns—such as the Singleton—to streamline architecture and ensure efficient state management.
+## Description
+A C++ simulation framework for evaluating page‑replacement strategies across varying RAM capacities and process counts. The tool:
 
-# Code Flow 
+- **Generates** synthetic page‑reference streams based on user‑specified RAM size and number of processes.
+- **Evaluates** four algorithms (OPT, FIFO, LRU, MRU) for every feasible page‑size, producing hit‑rate comparisons.
+- **Employs** clean, object‑oriented design with modular, loosely coupled classes.
+- **Incorporates** the Singleton pattern for efficient state management.
+
+---
+
+## Features
+- **Synthetic Stream Generator**  
+  Dynamically creates sequences of page requests per process.
+- **Algorithm Evaluations**  
+  Runs OPT, FIFO, LRU, and MRU on each stream, tracking misses and total references.
+- **Comprehensive Reporting**  
+  Outputs hit‑rate tables for all page sizes.
+- **Modular Design**  
+  Easily extendable architecture—add new algorithms or change parameters with minimal code impact.
+
+---
+
+## Code Flow
+
+```text
 main()
- └─► handler::createHandler()
-     ├─ input::getInput() → user enters (noOfProcess, RAMSize, processSize)
-     ├─ output::getOutput()
-     └─ history::updateHistory(input, output)
+└─► handler::createHandler()
+    ├─ input::getInput()       → User enters (noOfProcess, RAMSize, processSize)
+    ├─ output::getOutput()
+    └─ history::updateHistory(input, output)
 
- └─► handler::analyzeOnAllPageSize()
-     └─ for each pageSize = 0…min(RAMSize,processSize):
-         ├─ analyze = createAnalyze(...)
-         └─ analyze->runProcesses():
-             └─ for each process (0…noOfProcess–1):
-                 ├─ proc = createProcess(...)
-                 ├─ results = proc->runProcess():
-                 │    └─ for each algorithm in {OPT, FIFO, LRU, MRU}:
-                 │         instantiate RAM subclass → processRAM() → {miss,total}
-                 └─ mergeOutput(results)
-         └─ output->mergeOutput(analyze.curOutput)
+└─► handler::analyzeOnAllPageSize()
+    └─ for each pageSize ∈ [0 … min(RAMSize, processSize)]
+        ├─ analyze = createAnalyze(...)
+        └─ analyze->runProcesses()
+            └─ for each process ∈ [0 … noOfProcess−1]
+                ├─ proc    = createProcess(...)
+                ├─ results = proc->runProcess()
+                │   └─ for each algorithm ∈ {OPT, FIFO, LRU, MRU}
+                │       instantiate RAM subclass → processRAM() → {miss, total}
+                └─ mergeOutput(results)
 
- └─► handler::printAnalyzedData()
-     └─ history::printCurrentStats() → build & print hit‑rate table
+        └─ output->mergeOutput(analyze.curOutput)
 
-# Class Overview 
-  
-Class Overview
-history: Singleton class to store and print the history of simulation runs.
-handler: Manages the overall simulation, including input, analysis, and output.
-analyze: Runs simulations for all page sizes and aggregates results.
-process: Simulates a process with a sequence of page requests.
-RAM: Abstract base class for page replacement algorithms.
-FIFO, LRU, MRU, OPT: Implementations of different page replacement algorithms.
-algoData: Associates algorithm names with their constructors and IDs.
-input/output: Handle user input and output aggregation.
+└─► handler::printAnalyzedData()
+    └─ history::printCurrentStats() → Build & print hit‑rate table
+'''
