@@ -6,30 +6,5 @@
 * Incorporated system‑design patterns—such as the Singleton—to streamline architecture and ensure efficient state management.
 
 
-## Flow of the Project
-
-main()
- └─► handler::createHandler()
-     ├─ input::getInput() → user enters (noOfProcess, RAMSize, processSize)
-     ├─ output::getOutput()
-     └─ history::updateHistory(input, output)
-
- └─► handler::analyzeOnAllPageSize()
-     └─ for each pageSize = 0…min(RAMSize,processSize):
-         ├─ analyze = createAnalyze(...)
-         └─ analyze->runProcesses():
-             └─ for each process (0…noOfProcess–1):
-                 ├─ proc = createProcess(...)
-                 ├─ results = proc->runProcess():
-                 │    └─ for each algorithm in {OPT, FIFO, LRU, MRU}:
-                 │         instantiate RAM subclass → processRAM() → {miss,total}
-                 └─ mergeOutput(results)
-         └─ output->mergeOutput(analyze.curOutput)
-
- └─► handler::printAnalyzedData()
-     └─ history::printCurrentStats() → build & print hit‑rate table
-
-
-
 
 
